@@ -161,7 +161,7 @@ def dominant_colors(image):
     image = np.resize(image, (3*(image.shape[0])//4, 3*(image.shape[1])//4, image.shape[2]))
     ar = np.asarray(image)
     shape = ar.shape
-    ar = ar.reshape(np.product(shape[:2]), shape[2]).astype(float)
+    ar = ar.reshape(np.prod(shape[:2]), shape[2]).astype(float)
 
     kmeans = sklearn.cluster.MiniBatchKMeans(
         n_clusters=10,
