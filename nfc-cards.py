@@ -341,8 +341,6 @@ def generate_save_cards(link_id, options: dict, link_type="albums"):
         #
         # color palette
         #
-        # palette = dominant_colors(np.array(album_art))
-
         x_posn = spacing
         line_height = resolution[1] * 0.01
         for color in palette:
@@ -358,6 +356,7 @@ def generate_save_cards(link_id, options: dict, link_type="albums"):
         track_font = ImageFont.truetype(fonts['NotoSansJP-Thin.ttf'], track_font_size)
         track_line = ""
         lines = 0
+        track_lines_max = 4
         for track in data['tracks']:
             if options['remove_featured_artists']:
                 # remove anything inside parentheses including the parentheses
@@ -372,14 +371,15 @@ def generate_save_cards(link_id, options: dict, link_type="albums"):
             if track_font.getlength(track_line) >= resolution[0] - 2 * spacing:
                 # track_line = track_line[:len(track_line) - len(track + " | ")]
                 track_line = track_line[:len(track_line) - len(" | " + track)]
-                poster_draw.text((spacing, y_position), track_line, text_color, font=track_font)
+                if lines < track_lines_max:
+                    poster_draw.text((spacing, y_position), track_line, text_color, font=track_font)
                 lines += 1
                 # track_line = track + " | "
                 track_line = track
                 # y_position += track_font.getbbox(track_line)[3]
                 y_position += track_font.getbbox('g')[3]
 
-        if lines < 4:
+        if lines < track_lines_max:
             poster_draw.text((spacing, y_position), track_line, text_color, font=track_font)
 
         #
